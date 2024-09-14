@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <ctype.h> // For isalpha()
+#include <ctype.h> 
 #define MAX 10
 
 char stack[MAX];
@@ -21,7 +21,7 @@ char pop() {
         return op;
     } else {
         printf("Stack underflow\n");
-        return -1; // Return an invalid character
+        return -1;
     }
 }
 
@@ -49,7 +49,7 @@ int main() {
     
     for (i = 0; exp[i] != '\0'; i++) {
         if (exp[i] == ' ' || exp[i] == '\n') {
-            continue; // Skip spaces and newline characters
+            continue; 
         } else if (exp[i] == '(') {
             push(exp[i]);
         } else if (isalpha(exp[i])) {
@@ -66,7 +66,7 @@ int main() {
                 printf("%c", optr);
             }
             if (top != -1 && stack[top] == '(') {
-                pop(); // Remove '(' from the stack
+                pop(); 
             }
         }
     }
