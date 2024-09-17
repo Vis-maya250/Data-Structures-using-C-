@@ -28,5 +28,3 @@ printf("Polynomial is: \n);
       }
       }
       }
-      
-    
