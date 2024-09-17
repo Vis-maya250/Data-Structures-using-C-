@@ -45,5 +45,3 @@ void main()
        time++;
        printf("Time complexity=%d",time+1);
        }
-       
-   
