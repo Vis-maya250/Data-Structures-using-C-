@@ -45,10 +45,3 @@ int  main()
     printf("\ntime com[lexity%d",t);
     }
 }   
-     
-     
-      
-       
-    
-     
-  
