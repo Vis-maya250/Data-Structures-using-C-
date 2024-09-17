@@ -55,7 +55,4 @@ void main()
            printf("\n space complexity=%d\n",28+(n*4));
            time++;
            printf("time complexity=%d",time++);
-}
-         
-         
-       
+}    
