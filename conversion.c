@@ -5,25 +5,20 @@ int priority(char);
 char pop();
 int top = -1;
 char stack[50];
-
 void main() {
     char infix[50];
     char ch;
-    int i = 0, item;
-    
+    int i = 0, item; 
     printf("Enter the expression: ");
-    scanf("%s", infix);
-    
+    scanf("%s", infix);    
     while (infix[i] != '\0') 
     {
         ch = infix[i];
-        
         if (ch == '(') {
             push(ch);
         } 
         else if (isalnum(ch)) 
         {  
-            
             printf("%c", ch);
         } 
         else if (ch == ')') 
@@ -47,7 +42,6 @@ void main() {
         printf("%c", pop());
     }
 }
-
 void push(char ch) {
     if (top >= 49) {
         printf("Stack Overflow\n");
@@ -56,7 +50,6 @@ void push(char ch) {
         stack[top] = ch;
     }
 }
-
 char pop() 
 {
     if (top == -1)
@@ -69,7 +62,6 @@ char pop()
         return item;
     }
 }
-
 int priority(char ch) {
     if (ch == '(')
         return 0;
