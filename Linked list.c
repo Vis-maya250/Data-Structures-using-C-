@@ -1,202 +1,216 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 struct node {
     int data;
     struct node *link;
 };
 
-typedef struct node NODE;
-NODE *header = NULL, *newptr = NULL, *ptr, *ptr1;
+struct node *header, *newptr, *ptr1, *ptr2, *ptr;
 
-void traverse();
 void insertfront();
 void insertend();
 void insertany();
 void deletefront();
 void deleteend();
 void deleteany();
-void display();  
+void display();
+void traverse();  // Traversal function declaration
 
 void main() {
-    int no;
-    char c;
-    header = (NODE*)malloc(sizeof(NODE));  
-    header->link = NULL;
+    header = NULL;  
+    char ch = 'Y';
+    int op;
 
-    printf("\nPROGRAM TO PERFORM OPERATIONS ON SINGLE LINKED LIST");
-    printf("\n.......................................................");
+    while (ch == 'y' || ch == 'Y') {
+        printf("1.INSERT AT FRONT\n2.INSERT AT END\n3.INSERT AT ANY POSITION\n4.DELETE FROM FRONT\n5.DELETE FROM END\n6.DELETE FROM ANY POSITION\n7.DISPLAY\n8.TRAVERSE\n9.EXIT\n");
+        printf("Enter which operation to perform?: ");
+        scanf("%d", &op);
 
-    do {
-        printf("\n\t\t\t\t\t\tMENU\n");
-        printf("1.TRAVERSE\t2.INSERT AT FRONT\t3.INSERT AT END\t4.INSERT AT ANY POSITION\t5.DELETE FROM FRONT\t6.DELETE FROM END\t7.DELETE FROM ANY POSITION\t8.DISPLAY LIST\t9.EXIT\nEnter your choice: ");
-        scanf("%d", &no);
-        if (no == 9)
-            break;
-        else {
-            switch(no) {
-                case 1: traverse(); break;
-                case 2: insertfront(); break;
-                case 3: insertend(); break;
-                case 4: insertany(); break;
-                case 5: deletefront(); break;
-                case 6: deleteend(); break;
-                case 7: deleteany(); break;
-                case 8: display(); break;  
-                default: printf("\t\tINVALID ENTRY\n"); break;
-            }
-
-            printf("\t\tDo you want to continue (y/n): ");
-            scanf(" %c", &c);
+        switch(op) {
+            case 1:
+                insertfront();
+                break;
+            case 2:
+                insertend();
+                break;
+            case 3:
+                insertany();
+                break;
+            case 4:
+                deletefront();
+                break;
+            case 5:
+                deleteend();
+                break;
+            case 6:
+                deleteany();
+                break;
+            case 7:
+                display();
+                break;
+            case 8:
+                traverse();  // Call to the traversal function
+                break;
+            case 9:   
+                printf("Exiting program...\n");
+                exit(0);  
+            default:
+                printf("Invalid option!\n");
+                break;
         }
-    } while(c == 'y' || c == 'Y');
+
+        printf("Do you want to continue? (Y/N): ");
+        getchar();  
+        scanf("%c", &ch);
+    }
 }
 
 void insertfront() {
-    newptr = (NODE*)malloc(sizeof(NODE));
-    if (newptr == NULL) {
-        printf("\t\tInsufficient memory\n");
-        return;
-    }
-    printf("\t\tEnter the element: ");
-    scanf("%d", &newptr->data);
-    newptr->link = NULL;
+    newptr = (struct node *)malloc(sizeof(struct node));
 
-    newptr->link = header->link;  
-    header->link = newptr;  
+    printf("Enter data of the node: ");
+    scanf("%d", &newptr->data);
+    newptr->link = header;
+    header = newptr;
 }
 
 void insertend() {
-    newptr = (NODE*)malloc(sizeof(NODE));
-    if (newptr == NULL) {
-        printf("\t\tInsufficient memory\n");
-        return;
-    }
-    printf("\t\tEnter the element: ");
+    newptr = (struct node *)malloc(sizeof(struct node));
+    printf("Enter data of the node: ");
     scanf("%d", &newptr->data);
     newptr->link = NULL;
 
-    ptr = header;
-    while (ptr->link != NULL) {
-        ptr = ptr->link;
-    }
-    ptr->link = newptr;  
-}
-
-void insertany() {
-    int key;
-    newptr = (NODE*)malloc(sizeof(NODE));
-    if (newptr == NULL) {
-        printf("\t\tInsufficient memory\n");
-        return;
-    }
-    printf("\t\tEnter the key after which to insert: ");
-    scanf("%d", &key);
-    printf("\t\tEnter the element: ");
-    scanf("%d", &newptr->data);
-
-    ptr = header->link;
-    while (ptr != NULL && ptr->data != key) {
-        ptr = ptr->link;
-    }
-
-    if (ptr == NULL)
-        printf("\t\tKey not found\n");
-    else {
-        newptr->link = ptr->link;  
+    if (header == NULL) {
+        header = newptr;  
+    } else {
+        ptr = header;
+        while (ptr->link != NULL) {
+            ptr = ptr->link;
+        }
         ptr->link = newptr;
     }
 }
 
-void deletefront() {
-    if (header->link == NULL) {
-        printf("\t\tEmpty list\n");
+void insertany() {
+    int key;
+    newptr = (struct node *)malloc(sizeof(struct node));
+    printf("Enter key value: ");
+    scanf("%d", &key);
+
+    ptr1 = header;
+    while (ptr1 != NULL && ptr1->data != key) {
+        ptr1 = ptr1->link;
+    }
+
+    if (ptr1 == NULL) {
+        printf("Key not found!\n");
         return;
     }
 
-    ptr = header->link;
-    header->link = ptr->link;  // Remove the first node
-    printf("\t\tDeleted element is %d\n", ptr->data);
-    free(ptr); 
+    printf("Enter data of the node: ");
+    scanf("%d", &newptr->data);
+    newptr->link = ptr1->link;
+    ptr1->link = newptr;
 }
 
-void deleteend() {
-    if (header->link == NULL) {
-        printf("\t\tEmpty list\n");
+void deletefront() {
+    if (header == NULL) {
+        printf("Linked list is empty!\n");
         return;
     }
 
     ptr = header;
-    ptr1 = header->link;
-    if (ptr1->link == NULL) {  // Only one node present
-        header->link = NULL;
-        printf("\t\tDeleted element is %d\n", ptr1->data);
-        free(ptr1);
+    printf("%d deleted\n", ptr->data);
+    header = header->link;
+    free(ptr);
+}
+
+void deleteend() {
+    if (header == NULL) {
+        printf("Linked list is empty!\n");
         return;
     }
 
-    while (ptr1->link != NULL) {
-        ptr = ptr1;
-        ptr1 = ptr1->link;
+    ptr1 = header;
+    if (ptr1->link == NULL) {
+        printf("%d deleted\n", ptr1->data);
+        free(ptr1);
+        header = NULL;  
+        return;
     }
-    ptr->link = NULL;  // Remove the last node
-    printf("\t\tDeleted element is %d\n", ptr1->data);
-    free(ptr1);
+
+    ptr2 = ptr1->link;
+    while (ptr2->link != NULL) {
+        ptr1 = ptr2;
+        ptr2 = ptr2->link;
+    }
+
+    printf("%d deleted\n", ptr2->data);
+    ptr1->link = NULL;
+    free(ptr2);
 }
 
 void deleteany() {
     int key;
-    if (header->link == NULL) {
-        printf("\t\tEmpty list\n");
-        return;
-    }
-
-    printf("\t\tEnter the key to delete: ");
+    printf("Enter key value: ");
     scanf("%d", &key);
 
-    ptr = header;
-    ptr1 = header->link;
-
-    while (ptr1 != NULL && ptr1->data != key) {
-        ptr = ptr1;
-        ptr1 = ptr1->link;
-    }
-
-    if (ptr1 == NULL)
-        printf("\t\tKey not found\n");
-    else {
-        ptr->link = ptr1->link;  
-        printf("\t\tDeleted element is %d\n", ptr1->data);
-        free(ptr1);
-    }
-}
-
-void traverse() {
-    if (header->link == NULL) {
-        printf("\t\tList is empty\n");
+    ptr1 = header;
+    if (ptr1 == NULL) {
+        printf("Empty linked list!\n");
         return;
     }
 
-    printf("\t\tElements are:\n\t\t");
-    ptr = header->link;
-    while (ptr != NULL) {
-        printf("%d ", ptr->data);
-        ptr = ptr->link;
+    ptr2 = ptr1->link;
+    if (ptr1->data == key) {  
+        header = ptr1->link;
+        free(ptr1);
+        printf("Deleted node with key %d\n", key);
+        return;
     }
-    printf("\n");
+
+    while (ptr2 != NULL && ptr2->data != key) {
+        ptr1 = ptr2;
+        ptr2 = ptr2->link;
+    }
+
+    if (ptr2 == NULL) {
+        printf("Key not found!\n");
+    } else {
+        ptr1->link = ptr2->link;
+        printf("%d deleted\n", ptr2->data);
+        free(ptr2);
+    }
 }
 
-void display() {  // New function to display the linked list
-    if (header->link == NULL) {
+void display() {
+    if (header == NULL) {
         printf("\t\tList is empty\n");
         return;
     }
 
     printf("\t\tDisplaying the linked list:\n\t\t");
-    ptr = header->link;
+    ptr = header;
     while (ptr != NULL) {
         printf("%d ", ptr->data);
         ptr = ptr->link;
     }
     printf("\n");
+}
+
+// Traversal function
+void traverse() {
+    if (header == NULL) {
+        printf("The list is empty.\n");
+        return;
+    }
+
+    printf("Traversing the linked list:\n");
+    ptr = header;
+    while (ptr != NULL) {
+        printf("%d -> ", ptr->data);
+        ptr = ptr->link;
+    }
+    printf("NULL\n");
 }
